@@ -31,13 +31,16 @@ public with sharing class DMLOperations {
      */
     public static Id insertNewAccount() {
         // Create a new Account instance
+        Account myAccount = new Account();
 
         // Set some fields on the Account
+        myAccount.Name = 'First Apex Account';
 
         // Insert the Account into the database
+        insert myAccount;
 
         // Return the Id of the newly created Account
-        return null;
+        return myAccount.Id;
     }
 
     /**
