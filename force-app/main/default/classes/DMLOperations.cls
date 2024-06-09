@@ -17,7 +17,7 @@
  * The methods within this class serve as practical examples of different DML operations,
  * allowing developers to learn through practice and examples.
  *
- * @author Your Name
+ * @author T.J. Kuhn
  */
 
 
@@ -37,7 +37,9 @@ public with sharing class DMLOperations {
         myAccount.Name = 'First Apex Account';
 
         // Insert the Account into the database
+        system.debug('Before Insert: ' + myAccount);
         insert myAccount;
+        system.debug('After Insert: ' + myAccount);
 
         // Return the Id of the newly created Account
         return myAccount.Id;
