@@ -97,11 +97,13 @@ public with sharing class DMLOperations {
      */
     public static void updateContactLastName(Id contactId, String newLastName) {
         // Retrieve the Contact from the database
-        // [SELECT Id FROM Contact WHERE Id = :contactId]
+        Contact hw04Contact =  [SELECT Id FROM Contact WHERE Id = :contactId];
 
         // Update the Contact's last name
+        hw04Contact.LastName = newLastName;
 
         // Update the Contact in the database
+        update hw04Contact;
     }
 
     /**
