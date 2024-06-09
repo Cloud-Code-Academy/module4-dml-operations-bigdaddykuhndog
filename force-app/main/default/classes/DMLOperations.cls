@@ -53,8 +53,14 @@ public with sharing class DMLOperations {
      */
     public static void createAccount(String name, String industry) {
         // Create a new Account and set the fields inline
+        Account hw02Account = new Account();
+
+        hw02Account.name = name;
+        hw02Account.industry = industry;
 
         // Insert the Account
+        insert hw02Account;
+
     }
 
     
