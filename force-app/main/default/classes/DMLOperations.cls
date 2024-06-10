@@ -184,15 +184,15 @@ public with sharing class DMLOperations {
         // System.debug('I got to 2');
         List<Account> doesAccountExist = [SELECT Id FROM Account WHERE Name = :accountName limit 1];
 
-        System.debug('I got to 3');
+        // System.debug('I got to 3');
         if (doesAccountExist.size() == 0 ){
-            System.debug('I got to 3.1');
-            System.debug('doesAccountExist = ' + doesAccountExist);
+            // System.debug('I got to 3.1');
+            // System.debug('doesAccountExist = ' + doesAccountExist);
             account newAccount = new Account();
             newAccount.Name = accountName;
-            system.debug('before insert: ' + newAccount);
+            // system.debug('before insert: ' + newAccount);
             insert newAccount;
-            system.debug('after insert: ' + newAccount);
+            // system.debug('after insert: ' + newAccount);
             accountIdForOpp = newAccount.Id;
         } 
         else {
@@ -229,14 +229,37 @@ public with sharing class DMLOperations {
 	 */
 	public static Account upsertAccount(String accountName) {
 		// Query for the Account
+        System.debug('got to 0.1');
 		List<Account> accounts = [SELECT Id FROM Account WHERE Name = :accountName];
-
+        system.debug('got to 0.2');
+        Account accountToReturn;
 		// if the Account exists, update the description
-
-		// otherwise, create a new Account and set the description
-
-		// Upsert the Account
-		return null;
+        if (accounts.size() > 0) {
+            for (Account eachAccount : accounts) {
+                // system.debug('got to 1');
+                // system.debug('before upsert: ' + eachAccount);
+                eachAccount.Description = 'Updated Account';
+                upsert eachAccount;
+                // system.debug('after upsert: ' + eachAccount);
+                accountToReturn = eachAccount;
+            }
+            return accountToReturn;           
+        }
+        
+        
+        // otherwise, create a new Account and set the description
+        else {
+            // system.debug('got to a new account ');
+            Account newAccount = new Account();
+            newAccount.Name = accountName;
+            newAccount.Description = 'New Account';
+            // Upsert the Account
+            // system.debug('before new account insert: ' + newAccount);
+            insert newAccount;
+            // system.debug('after new account insert: ' + newAccount);
+            accountToReturn = newAccount;
+            return newAccount;
+        }	
 	}
 
     /**
