@@ -229,9 +229,9 @@ public with sharing class DMLOperations {
 	 */
 	public static Account upsertAccount(String accountName) {
 		// Query for the Account
-        System.debug('got to 0.1');
+        // System.debug('got to 0.1');
 		List<Account> accounts = [SELECT Id FROM Account WHERE Name = :accountName];
-        system.debug('got to 0.2');
+        // system.debug('got to 0.2');
         Account accountToReturn;
 		// if the Account exists, update the description
         if (accounts.size() > 0) {
@@ -273,14 +273,18 @@ public with sharing class DMLOperations {
 	 */
 	public static void upsertAccountsWithContacts(List<Contact> contactsToUpsert) {
 		// Loop through each Contact
+        for (Contact eachContact : contactsToUpsert) {
+            // Extract the Account Name from Contact's LastName    
+            // Get the account based on the name or create one if it doesn't exist
+            Account thisAccount = upsertAccount(eachContact.LastName);
 
-		// Extract the Account Name from Contact's LastName
-
-		// Get the account based on the name or create one if it doesn't exist
-
-		// Link the Contact to its Account using the Account Id
-
-		// Upsert the Contacts
+            // Link the Contact to its Account using the Account Id
+            eachContact.AccountId = thisAccount.Id;
+         
+            // Upsert the Contacts
+            upsert eachContact;
+            // System.debug('contact = ' + eachContact);
+        }
 	}
 
     /**
