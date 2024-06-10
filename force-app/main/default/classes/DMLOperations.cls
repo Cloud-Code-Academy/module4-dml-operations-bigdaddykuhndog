@@ -139,7 +139,7 @@ public with sharing class DMLOperations {
         // Update the Account with the given Id with the new name and industry
         hw06Account.Name = newName;
         hw06Account.Industry = newIndustry;
-
+        System.debug('Before updating: ' + hw06Account);
         update hw06Account;
     }
 
@@ -177,9 +177,46 @@ public with sharing class DMLOperations {
      * @param oppNames The list of Opportunity names.
      */
     public static void upsertOpportunities(String accountName, List<String> oppNames) {
+
+        // System.debug('I got to 1');
+        id accountIdForOpp;
+        
+        // System.debug('I got to 2');
+        List<Account> doesAccountExist = [SELECT Id FROM Account WHERE Name = :accountName limit 1];
+
+        System.debug('I got to 3');
+        if (doesAccountExist.size() == 0 ){
+            System.debug('I got to 3.1');
+            System.debug('doesAccountExist = ' + doesAccountExist);
+            account newAccount = new Account();
+            newAccount.Name = accountName;
+            system.debug('before insert: ' + newAccount);
+            insert newAccount;
+            system.debug('after insert: ' + newAccount);
+            accountIdForOpp = newAccount.Id;
+        } 
+        else {
+            // System.debug('I got to 4');
+            // System.debug('doesAccountExist = ' + doesAccountExist);
+            //accountIdForOpp = doesAccountExist[0];
+        }
+
+    
         // Loop through each Opportunity name
+        
+        for (string eachOppName : oppNames){
+            // system.debug('Got to 5');
             // Create an Opportunity with the given name
+            opportunity hw08Opportunity = new Opportunity();
+            hw08Opportunity.Name = eachOppName;
+            hw08Opportunity.AccountId = accountIdForOpp;
+            hw08Opportunity.StageName = 'Qualification';
+            hw08Opportunity.CloseDate = date.today();
+
             // Add the Opportunity to the list
+            // System.debug('Opportunity = ' + hw08Opportunity);
+            insert hw08Opportunity;
+        }
     }
     
     /**
