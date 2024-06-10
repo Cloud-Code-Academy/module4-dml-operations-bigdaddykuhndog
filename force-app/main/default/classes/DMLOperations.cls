@@ -294,10 +294,18 @@ public with sharing class DMLOperations {
      */
     public static void insertAndDeleteLeads(List<String> leadNames) {
         // Loop through each Lead name
+        for (string eachLeadName : leadNames) {
+            Lead thisLead = new Lead();
+            // System.debug('lead before upsert: ' + thisLead);
+            thisLead.LastName = eachLeadName;
+            thisLead.Company = eachLeadName;
+            // System.debug('after before upsert: ' + thisLead);
+            // Insert the Leads
+            upsert thisLead;
 
-        // Insert the Leads
-
-        // Delete the Leads
+            // Delete the Leads
+            delete thisLead;
+        }
     }
 
 
